@@ -1,245 +1,172 @@
-{% load static %} {% block content %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eden cafe</title>
-    <link rel="preconnect" href="{% static 'https://fonts.googleapis.com' %}">
-    <link rel="preconnect" href="{% static 'https://fonts.gstatic.com' %}" crossorigin>
-    <link href="{% static 'https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&family=Oswald:wght@600&display=swap' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/all.min.css' %}"> <!-- fontawesome -->
-    <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
+    <title>کافه ایدن - Eden Cafe</title>
+    <meta name="description" content="کافه ایدن - بهترین قهوه و فضای دنج برای لحظات خاص شما">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&family=Oswald:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
     <link rel="stylesheet" href="{% static 'css/tooplate-antique-cafe.css' %}">
-    
-<!--
-
-Tooplate 2126 Antique Cafe
-
-https://www.tooplate.com/view/2126-antique-cafe
-
--->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 </head>
-<body>    
-    <!-- Intro -->
-    <div id="intro" class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/antique-cafe-bg-01.jpg' %}">
-        <nav id="tm-nav" class="fixed w-full">
-            <div class="tm-container mx-auto px-2 md:py-6 text-right">
-                <button class="md:hidden py-2 px-2" id="menu-toggle"><i class="fas fa-2x fa-bars tm-text-gold"></i></button>
-                <ul class="mb-3 md:mb-0 text-2xl font-normal flex justify-end flex-col md:flex-row">
-                    <li class="inline-block mb-4 mx-4"><a href="#intro" class="tm-text-gold py-1 md:py-3 px-4">Intro</a></li>
-                    <li class="inline-block mb-4 mx-4"><a href="#menu" class="tm-text-gold py-1 md:py-3 px-4">Menu</a></li>
-                    <li class="inline-block mb-4 mx-4"><a href="#about" class="tm-text-gold py-1 md:py-3 px-4">About</a></li>
-                    <li class="inline-block mb-4 mx-4"><a href="#contact" class="tm-text-gold py-1 md:py-3 px-4">Contact</a></li>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+            <p class="text-white text-lg">در حال بارگذاری...</p>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div id="messages" class="fixed top-4 right-4 z-50">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} bg-green-500 text-white px-6 py-3 rounded-lg mb-2 shadow-lg">
+                    {{ message }}
+                    <button class="float-left ml-4 text-xl" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Navigation -->
+    <nav id="tm-nav" class="fixed w-full z-40 transition-all duration-300">
+        <div class="tm-container mx-auto px-4 md:py-6">
+            <div class="flex justify-between items-center">
+                <div class="logo">
+                    <h3 class="text-2xl font-bold tm-text-gold">کافه ایدن</h3>
+                </div>
+                <button class="md:hidden py-2 px-2" id="menu-toggle">
+                    <i class="fas fa-2x fa-bars tm-text-gold"></i>
+                </button>
+                <ul class="hidden md:flex text-xl font-normal space-x-8">
+                    <li><a href="#intro" class="tm-text-gold hover:text-yellow-300 transition py-2 px-4">خانه</a></li>
+                    <li><a href="#menu" class="tm-text-gold hover:text-yellow-300 transition py-2 px-4">منو</a></li>
+                    <li><a href="#about" class="tm-text-gold hover:text-yellow-300 transition py-2 px-4">درباره ما</a></li>
+                    <li><a href="#contact" class="tm-text-gold hover:text-yellow-300 transition py-2 px-4">تماس</a></li>
+                    <li><a href="#reservation" class="tm-text-gold hover:text-yellow-300 transition py-2 px-4">رزرو</a></li>
                 </ul>
-            </div>            
-        </nav>
-        <div class="container mx-auto px-2 tm-intro-width">
-            <div class="sm:pb-60 sm:pt-48 py-20">
-                <div class="bg-black bg-opacity-70 p-12 mb-5 text-center">
-                    <h1 class="text-white text-5xl tm-logo-font mb-5">کافه ایدن</h1>
-                    <p class="tm-text-gold tm-text-2xl">در کافه ایدن هر لحظه یک تجربه خاص است. با عطر دلپذیر قهوه‌های تازه‌دم و فضایی گرم و صمیمی، اینجا مکانی است برای آرامش و لذت. منتظریم تا شما را با بهترین طعم‌ها و حس‌ها پذیرایی کنیم.</p>
-                </div>    
-                <div class="text-center">
-                    <div class="inline-block">
-                        <a href="#menu" class="flex justify-center items-center bg-black bg-opacity-70 py-6 px-8 rounded-lg font-semibold tm-text-2xl tm-text-gold hover:text-gray-200 transition">
-                            <i class="fas fa-coffee mr-3"></i>
-                            <span>Let's explore...</span>                        
-                        </a>
-                    </div>                    
-                </div>                
             </div>
-        </div>        
-    </div>
-    <!-- Cafe Menu -->
-    <div id="menu" class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/antique-cafe-bg-02.jpg' %}">
-        <div class="container mx-auto tm-container py-24 sm:py-48">
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden mt-4">
+                <ul class="flex flex-col space-y-2">
+                    <li><a href="#intro" class="block tm-text-gold hover:text-yellow-300 transition py-2 px-4">خانه</a></li>
+                    <li><a href="#menu" class="block tm-text-gold hover:text-yellow-300 transition py-2 px-4">منو</a></li>
+                    <li><a href="#about" class="block tm-text-gold hover:text-yellow-300 transition py-2 px-4">درباره ما</a></li>
+                    <li><a href="#contact" class="block tm-text-gold hover:text-yellow-300 transition py-2 px-4">تماس</a></li>
+                    <li><a href="#reservation" class="block tm-text-gold hover:text-yellow-300 transition py-2 px-4">رزرو</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="intro" class="parallax-window min-h-screen flex items-center" data-parallax="scroll" data-image-src="{% static 'img/antique-cafe-bg-01.jpg' %}">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <div class="bg-black bg-opacity-70 p-8 md:p-12 rounded-xl mb-8 animate-fade-in">
+                    <h1 class="text-white text-4xl md:text-6xl tm-logo-font mb-6">کافه ایدن</h1>
+                    <p class="tm-text-gold text-lg md:text-2xl leading-relaxed max-w-4xl mx-auto">
+                        در کافه ایدن هر لحظه یک تجربه خاص است. با عطر دلپذیر قهوه‌های تازه‌دم و فضایی گرم و صمیمی، اینجا مکانی است برای آرامش و لذت.
+                    </p>
+                </div>
+                <div class="space-y-4 md:space-y-0 md:space-x-4 md:flex md:justify-center">
+                    <a href="#menu" class="inline-flex items-center bg-black bg-opacity-70 hover:bg-opacity-90 py-4 px-8 rounded-lg font-semibold text-xl tm-text-gold hover:text-yellow-300 transition transform hover:scale-105">
+                        <i class="fas fa-coffee ml-3"></i>
+                        <span>مشاهده منو</span>
+                    </a>
+                    <a href="#reservation" class="inline-flex items-center bg-yellow-600 hover:bg-yellow-700 py-4 px-8 rounded-lg font-semibold text-xl text-white transition transform hover:scale-105">
+                        <i class="fas fa-calendar-alt ml-3"></i>
+                        <span>رزرو میز</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="parallax-window py-16 md:py-24" data-parallax="scroll" data-image-src="{% static 'img/antique-cafe-bg-02.jpg' %}">
+        <div class="container mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="bg-white tm-text-brown py-6 px-12 text-4xl font-medium inline-block rounded-md">منو کافه</h2>
-            </div>            
-            <div class="flex flex-col lg:flex-row justify-around items-center">
-                <div class="flex-1 m-5 rounded-xl px-4 py-6 sm:px-8 sm:py-10 tm-bg-brown tm-item-container">
-                    <div class="flex items-start mb-6 tm-menu-item">
-                        <img src="{% static 'img/menu-item-1.jpg' %}" alt="Image" class="rounded-md">
-                        <div class="ml-3 sm:ml-6">
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">کاپوچینو</h3>
-                            <div class="text-white text-md sm:text-lg font-light mb-1">Small 50T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 80T</div>
-                        </div>                    
-                    </div>
-                    <div class="flex items-start mb-6 tm-menu-item">
-                        <img src="{% static 'img/menu-item-2.jpg' %}" alt="Image" class="rounded-md">
-                        <div class="ml-3 sm:ml-6">
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">آمریکانو</h3>
-                            <div class="text-white text-md sm:text-lg font-light mb-1">Small 55T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 65T</div>
-                        </div>                    
-                    </div>
-                    <div class="flex items-start mb-6 tm-menu-item">
-                        <img src="{% static 'img/menu-item-3.jpg' %}" alt="Image" class="rounded-md">
-                        <div class="ml-3 sm:ml-6">
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">لاته</h3>
-                            <div class="text-white text-md sm:text-lg font-light mb-1">small 65T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 85T</div>
-                        </div>                    
-                    </div>
-                    <div class="flex items-start mb-6 tm-menu-item">
-                        <img src="{% static 'img/menu-item-4.jpg' %}" alt="Image" class="rounded-md">
-                        <div class="ml-3 sm:ml-6">
-                            <h3 class="text-lg sm:text-xl tm-text-yellow mb-1">اسپرسو</h3>
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">هات چاکلت</h3>
-                            <div class="text-white text-md sm:text-lg font-light">Small 65T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 85T</div>
-                        </div>                    
-                    </div>
-                </div>
-                <div class="flex-1 m-5 rounded-xl px-4 py-6 sm:px-8 sm:py-10 tm-bg-brown tm-item-container">
-                    <div class="flex items-start justify-end mb-6 tm-menu-item-2">
-                        <div class="text-right mr-6">
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">آیس کاپوچینو</h3>
-                            <div class="text-white text-md sm:text-lg font-light mb-1">Small 70T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 90T</div>
-                        </div>
-                        <img src="{% static 'img/menu-item-5.jpg' %}" alt="Image" class="rounded-md">                   
-                    </div>
-                    <div class="flex items-start justify-end mb-6 tm-menu-item-2">
-                        <div class="text-right mr-6">
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">آیس آمریکانو</h3>
-                            <div class="text-white text-md sm:text-lg font-light mb-1">Small 67T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 85T</div>
-                        </div>
-                        <img src="{% static 'img/menu-item-6.jpg' %}" alt="Image" class="rounded-md">                    
-                    </div>
-                    <div class="flex items-start justify-end mb-6 tm-menu-item-2">
-                        <div class="text-right mr-6">
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">آیس لاته</h3>
-                            <div class="text-white text-md sm:text-lg font-light mb-1">Small 75T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 95T</div>
-                        </div>   
-                        <img src="{% static 'img/menu-item-7.jpg' %}" alt="Image" class="rounded-md">                 
-                    </div>
-                    <div class="flex items-start justify-end mb-6 tm-menu-item-2">                    
-                        <div class="text-right mr-6">
-                            <h3 class="text-lg sm:text-xl tm-text-yellow mb-1">آیس اسپرسو</h3>
-                            <h3 class="text-lg sm:text-xl mb-2 sm:mb-3 tm-text-yellow">آیس موکا</h3>
-                            <div class="text-white text-md sm:text-lg font-light">Small 75T</div>
-                            <div class="text-white text-md sm:text-lg font-light">Large 95T</div>
-                        </div> 
-                        <img src="{% static 'img/menu-item-8.jpg' %}" alt="Image" class="rounded-md">                   
-                    </div>                                    
-                </div>
+                <h2 class="bg-white tm-text-brown py-6 px-12 text-3xl md:text-4xl font-medium inline-block rounded-md shadow-lg">منو کافه</h2>
             </div>
-        </div>        
-    </div>
-    <div id="about" class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/antique-cafe-bg-03.jpg' %}">
-        <div class="container mx-auto tm-container py-24 sm:py-48">
-            <div class="tm-item-container sm:ml-auto sm:mr-12 mx-auto sm:px-0 px-4">
-                <div class="bg-white bg-opacity-80 p-12 pb-14 rounded-xl mb-5">
-                    <h2 class="mb-6 tm-text-green text-4xl font-medium">کافه ایدن</h2>
-                    <p class="mb-6 text-base leading-8">
-                        نیم‌رخ ایدن، به عبارتی نمایش تمام نورون‌های حسی، عصبی و نقاط اتصالشان است برای رساندن مفهوم ارتباط حواس، مکث و ادراک. پس ما به آن‌چه لمس می‌کنید، می‌چشید، می‌بوئید و می‌بینید توجه می‌کنیم و بر اساس بازخورد ادراک حسی شما در جهت ارتقا این برند گام برمی‌داریم.
-                  </p>
-                    <p class="text-base leading-8">
-                        استفاده از گیاهان خاص و درختچه‌های طبیعی در دکوراسیون، جذابیت بصری و مشهودی را به این مجموعه بخشیده است. </p>
-                </div>
-                <a href="#contact" class="inline-block tm-bg-green transition text-white text-xl pt-3 pb-4 px-8 rounded-md">
-                    <i class="far fa-comments mr-4"></i>
-                    Contact
-                </a>
-            </div>           
-        </div>        
-    </div>
-    <div id="contact" class="parallax-window relative" data-parallax="scroll" data-image-src="{% static 'img/antique-cafe-bg-04.jpg' %}">
-        <div class="container mx-auto tm-container pt-24 pb-48 sm:py-48">
-            <div class="flex flex-col lg:flex-row justify-around items-center lg:items-stretch">
-                <div class="flex-1 rounded-xl px-10 py-12 m-5 bg-white bg-opacity-80 tm-item-container">
-                    <h2 class="text-3xl mb-6 tm-text-green">Contact Us</h2>
-                    <p class="mb-6 text-lg leading-8">
-                        در “کافه ایدن”، همواره آماده شنیدن نظرات، پیشنهادات و سوالات شما هستیم. برای تسهیل ارتباط و پاسخگویی سریع‌تر، از سیستم تیکتینگ ما استفاده کنید    
-                    </p>
-                    <p class="mb-10 text-lg">
-                        <span class="block mb-2">Tel: <a href="tel:0100200340" class="hover:text-yellow-600 transition">010-020-0340</a></span>
-                        <span class="block">Email: <a href="mailto:info@company.com" class="hover:text-yellow-600 transition">info@company.com</a></span>                        
-                    </p>
-                    <div class="text-center">
-                        <a href="https://www.google.com/maps" class="inline-block text-white text-2xl pl-10 pr-12 py-6 rounded-lg transition tm-bg-green">
-                            <i class="fas fa-map-marked-alt mr-8"></i>
-                            Open Maps
-                        </a>
-                    </div>                    
-                </div>
-                <div class="flex-1 rounded-xl p-12 pb-14 m-5 bg-black bg-opacity-50 tm-item-container">
-                    <form action="" method="POST" class="text-lg">
-                        <input type="text" name="name" class="input w-full bg-black border-b bg-opacity-0 text-white px-0 py-4 mb-4 tm-border-gold" placeholder="Name" required="" />
-                        <input type="email" name="email" class="input w-full bg-black border-b bg-opacity-0 text-white px-0 py-4 mb-4 tm-border-gold" placeholder="Email" required="" />
-                        <textarea rows="6" name="message" class="input w-full bg-black border-b bg-opacity-0 text-white px-0 py-4 mb-4 tm-border-gold" placeholder="Message..." required=""></textarea>
-                        <div class="text-right">
-                            <button type="submit" class="text-white hover:text-yellow-500 transition">Send it</button>
-                        </div>                        
-                      </form>
-                </div>
-            </div>
-            <footer class="absolute bottom-0 left-0 w-full">
-                <div class="text-white container mx-auto tm-container p-8 text-lg flex flex-col md:flex-row justify-between">
-                    <span>تمام حقوق این سایت مطلق به کافه ایدن است ( تقدیم با 🤎 )</span>
-                </div>                
-            </footer>
-        </div>        
-    </div>    
-
-    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <script src="{% static 'js/parallax.min.js' %}"></script>
-    <script src="{% static 'js/jquery.singlePageNav.min.js' %}"></script>
-    <script>
-
-        function checkAndShowHideMenu() {
-            if(window.innerWidth < 768) {
-                $('#tm-nav ul').addClass('hidden');                
-            } else {
-                $('#tm-nav ul').removeClass('hidden');
-            }
-        }
-
-        $(function(){
-            var tmNav = $('#tm-nav');
-            tmNav.singlePageNav();
-
-            checkAndShowHideMenu();
-            window.addEventListener('resize', checkAndShowHideMenu);
-
-            $('#menu-toggle').click(function(){
-                $('#tm-nav ul').toggleClass('hidden');
-            });
-
-            $('#tm-nav ul li').click(function(){
-                if(window.innerWidth < 768) {
-                    $('#tm-nav ul').addClass('hidden');
-                }                
-            });
-
-            $(document).scroll(function() {
-                var distanceFromTop = $(document).scrollTop();
-
-                if(distanceFromTop > 100) {
-                    tmNav.addClass('scroll');
-                } else {
-                    tmNav.removeClass('scroll');
-                }
-            });
             
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
+            <!-- Menu Filter -->
+            <div class="text-center mb-12">
+                <div class="inline-flex bg-black bg-opacity-50 rounded-lg p-2">
+                    <button class="menu-filter active px-6 py-2 rounded-md text-white transition" data-filter="all">همه</button>
+                    <button class="menu-filter px-6 py-2 rounded-md text-white transition" data-filter="hot">گرم</button>
+                    <button class="menu-filter px-6 py-2 rounded-md text-white transition" data-filter="cold">سرد</button>
+                </div>
+            </div>
 
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-        });
-    </script>
-</body>
-</html>
-{% endblock %}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Hot Drinks -->
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 md:p-8">
+                    <h3 class="text-2xl font-bold tm-text-yellow mb-6 text-center">نوشیدنی‌های گرم</h3>
+                    <div class="space-y-6">
+                        <div class="menu-item hot flex items-center bg-white bg-opacity-10 rounded-lg p-4 hover:bg-opacity-20 transition">
+                            <img src="{% static 'img/menu-item-1.jpg' %}" alt="کاپوچینو" class="w-16 h-16 rounded-lg object-cover">
+                            <div class="flex-1 mr-4">
+                                <h4 class="text-lg font-semibold tm-text-yellow">کاپوچینو</h4>
+                                <p class="text-gray-300 text-sm">اسپرسو با شیر بخارپز شده</p>
+                            </div>
+                            <div class="text-left">
+                                <div class="text-white font-semibold">کوچک: ۵۰ هزار تومان</div>
+                                <div class="text-white font-semibold">بزرگ: ۸۰ هزار تومان</div>
+                            </div>
+                        </div>
+                        <!-- Add more hot drinks here -->
+                    </div>
+                </div>
+
+                <!-- Cold Drinks -->
+                <div class="bg-black bg-opacity-70 rounded-xl p-6 md:p-8">
+                    <h3 class="text-2xl font-bold tm-text-yellow mb-6 text-center">نوشیدنی‌های سرد</h3>
+                    <div class="space-y-6">
+                        <div class="menu-item cold flex items-center bg-white bg-opacity-10 rounded-lg p-4 hover:bg-opacity-20 transition">
+                            <img src="{% static 'img/menu-item-5.jpg' %}" alt="آیس کاپوچینو" class="w-16 h-16 rounded-lg object-cover">
+                            <div class="flex-1 mr-4">
+                                <h4 class="text-lg font-semibold tm-text-yellow">آیس کاپوچینو</h4>
+                                <p class="text-gray-300 text-sm">کاپوچینو سرد با یخ</p>
+                            </div>
+                            <div class="text-left">
+                                <div class="text-white font-semibold">کوچک: ۷۰ هزار تومان</div>
+                                <div class="text-white font-semibold">بزرگ: ۹۰ هزار تومان</div>
+                            </div>
+                        </div>
+                        <!-- Add more cold drinks here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="parallax-window py-16 md:py-24" data-parallax="scroll" data-image-src="{% static 'img/antique-cafe-bg-03.jpg' %}">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white bg-opacity-90 p-8 md:p-12 rounded-xl shadow-2xl">
+                    <h2 class="mb-8 tm-text-green text-3xl md:text-4xl font-medium text-center">درباره کافه ایدن</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <p class="mb-6 text-base leading-8 text-gray-700">
+                                نیم‌رخ ایدن، به عبارتی نمایش تمام نورون‌های حسی، عصبی و نقاط اتصالشان است برای رساندن مفهوم ارتباط حواس، مکث و ادراک.
+                            </p>
+                            <p class="text-base leading-8 text-gray-700">
+                                استفاده از گیاهان خاص و درختچه‌های طبیعی در دکوراسیون، جذابیت بصری و مشهودی را به این مجموعه بخشیده است.
+                            </p>
+                        </div>
+                        <div class="text-center">
+                            <img src="{% static 'img/about-cafe.jpg' %}" alt="ک
